@@ -16,7 +16,7 @@
 \usepackage[colorlinks = true, urlcolor  = blue]{hyperref}
 \graphicspath{ {./images/} }
 \usepackage{biblatex}
-\addbibresource{Bibliography.bib}
+\addbibresource{bibliography.bib}
 
 \usepackage{hyperref}
 \hypersetup{
@@ -34,21 +34,15 @@
 %\setcounter{secnumdepth}{2}
 
 \begin{document}
-\input{sections/front-page}
+\input{sections/frontpage}
 
-\pagenumbering{roman}
+\pagenumbering{arabic}
 \setcounter{secnumdepth}{2}
 \setcounter{tocdepth}{2}
 \tableofcontents
 \newpage
 \pagenumbering{arabic}
 
-\input{sections/systems}
-\newpage
-\input{sections/processes}
-\newpage
-\input{sections/lessons-learned}
-\newpage
 % Print the bibliography
 \printbibliography
 % \newpage
