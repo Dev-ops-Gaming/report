@@ -1,0 +1,56 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage{verbatim} 
+\usepackage{subfig}
+\usepackage{wrapfig}
+\usepackage{listings}
+\usepackage{array}
+\usepackage[utf8]{inputenc}
+\setlength {\marginparwidth }{2cm}
+\usepackage{todonotes}
+\usepackage{newtxtext}
+\usepackage{blindtext}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{pdflscape} % For landscape pages
+\usepackage{float}     % For ordering images and text accordingly
+\usepackage[colorlinks = true, urlcolor  = blue]{hyperref}
+\graphicspath{ {./images/} }
+\usepackage{biblatex}
+\addbibresource{Bibliography.bib}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=false, % Set to false if you don't want colored links
+    linkcolor=blue,   % Color of links to internal documents
+    filecolor=magenta, % Color of file links
+    urlcolor=cyan     % Color of external links
+}
+
+\setlist[itemize]{itemsep=2pt, parsep=0pt}
+\setlength{\arrayrulewidth}{0.3mm}
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.5}
+
+%\setcounter{secnumdepth}{2}
+
+\begin{document}
+\input{sections/front-page}
+
+\pagenumbering{roman}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+
+\input{sections/systems}
+\newpage
+\input{sections/processes}
+\newpage
+\input{sections/lessons-learned}
+\newpage
+% Print the bibliography
+\printbibliography
+% \newpage
+% \input{sections/apendix}
+\end{document}
