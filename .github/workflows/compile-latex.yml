@@ -10,7 +10,7 @@ jobs:
         steps:
             - uses: JesseTG/rm@v1.0.3
               with:
-                  path: ./BSc_group_d.pdf
+                  path: ./build/BSc_group_d.pdf
     
     build_latex:
         needs: rm-old-pdf
@@ -18,17 +18,29 @@ jobs:
         steps:
             - name: Checkout repository
               uses: actions/checkout@v4
-                
+              with:
+                  fetch-depth: 0  # Needed to push back to repo
+            
             - name: Compile LaTeX document
               uses: xu-cheng/latex-action@v3
               with:
                   root_file: main.tex
-                    
-            - name: Rename and move PDF
+                  latexmk_use_xelatex: true
+            
+            - name: Create build directory
+              run: mkdir -p build
+            
+            - name: Move and rename PDF
+              run: mv main.pdf build/BSc_group_d.pdf
+            
+            - name: Commit and push PDF
               run: |
-                  mkdir -p build
-                  mv main.pdf build/BSc_group_d.pdf
-                    
+                  git config --global user.name "GitHub Actions"
+                  git config --global user.email "actions@github.com"
+                  git add build/BSc_group_d.pdf
+                  git commit -m "Auto-commit compiled PDF [skip ci]"
+                  git push
+            
             - name: Upload PDF artifact
               uses: actions/upload-artifact@v4
               with:
