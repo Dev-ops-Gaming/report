@@ -35,9 +35,13 @@ Here are the scenarios presented on the risk matrix\\
 \begin{tabular}{ |c|c|c|c|c| } 
  \hline
   & Rare & Unlikely & Likely & Certain \\ 
+ \hline
  Catastrophic & B &  &  & G\\ 
+ \hline
  Critical & A &  &  & G \\ 
+ \hline
  Marginal & &  &  F& E,G\\ 
+ \hline
  Negligible & C &  & D & G,H\\ 
  \hline
 \end{tabular}
@@ -58,9 +62,13 @@ We have replicas of the following services:\\
 \begin{tabular}{ |c|c|c| } 
  \hline
  Service & Replicated/Global & Nr. of replicas \\ 
+ \hline
  Minitwit App & Replicated & 3 \\ 
+ \hline
  Minitwit API & Replicated & 4 \\
+ \hline
  Prometheus & Global & N/A \\ 
+ \hline
  Dozzle & Global & N/A \\ 
  \hline
 \end{tabular}
@@ -72,5 +80,8 @@ Prometheus and Dozzle are set to be global services, as they are responsible for
 To update the services in our swarm, we use the 'Blue-Green' update strategy for our Minitwit App and API. When there is an update, a new environment will be created with said update. When it is up and running, traffic will be redirected from the original environment to the newly created one. This leads to minimal downtime for our Minitwit.\\
 In case something goes wrong, we do a rollback, to revert the changes made by the update. **why is rollback stop-first? does it matter?**
 
-\subsection{CI/CD Chain}
+\section{CI/CD Chain}
 \input{sections/workflows}
+
+\section{Monitoring}
+\input{sections/monitoring}
