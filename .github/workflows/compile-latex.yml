@@ -1,0 +1,36 @@
+name: compile-latex
+
+on:
+    push:
+    workflow_dispatch:
+
+jobs:
+    rm-old-pdf:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: JesseTG/rm@v1.0.3
+              with:
+                  path: ./BSc_group_d.pdf
+    
+    build_latex:
+        needs: rm-old-pdf
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+                
+            - name: Compile LaTeX document
+              uses: xu-cheng/latex-action@v3
+              with:
+                  root_file: main.tex
+                    
+            - name: Rename and move PDF
+              run: |
+                  mkdir -p build
+                  mv main.pdf build/BSc_group_d.pdf
+                    
+            - name: Upload PDF artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: PDF
+                  path: build/BSc_group_d.pdf
