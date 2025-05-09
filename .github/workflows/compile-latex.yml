@@ -13,6 +13,8 @@ jobs:
                   path: ./build/BSc_group_d.pdf
     
     build_latex:
+        permissions:
+            contents: write
         needs: rm-old-pdf
         runs-on: ubuntu-latest
         steps:
