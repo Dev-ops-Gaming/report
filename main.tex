@@ -11,6 +11,7 @@
 \usepackage{blindtext}
 \usepackage{enumitem}
 \usepackage{graphicx}
+\usepackage{outlines}
 \usepackage{pdflscape} % For landscape pages
 \usepackage{float}     % For ordering images and text accordingly
 \usepackage[colorlinks = true, urlcolor  = blue]{hyperref}
@@ -31,6 +32,10 @@
 \setlength{\tabcolsep}{10pt}
 \renewcommand{\arraystretch}{1.5}
 
+\usepackage{xcolor}
+\definecolor{light-gray}{gray}{0.95}
+\newcommand{\code}[1]{\colorbox{light-gray}{\texttt{#1}}} % Functions to create code snippets with \code{code}
+
 %\setcounter{secnumdepth}{2}
 
 \begin{document}
@@ -42,6 +47,7 @@
 \tableofcontents
 \newpage
 \pagenumbering{arabic}
+\input{sections/ProcessPerspective}
 
 % Print the bibliography
 \printbibliography
