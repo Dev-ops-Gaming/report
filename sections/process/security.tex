@@ -1,0 +1,56 @@
+To protect our system against adversaries, we first identify the assets which must be protected. We then identify which threats we could be faced with and how. Finally, we analyze these scenarios to figure out which scenarios pose the biggest threats.\\
+(i dunno if this intro text is necessary. Can maybe be cut if we don't have space?)
+
+\subsubsection{Risk Identification}
+Our assets:
+\begin{itemize}
+    \item Codebase
+    \item Database
+    \item Logs
+\end{itemize}
+
+Threat Sources:
+\begin{itemize}
+    \item SQL Injection
+    \item Exposed ports (Prometheus)
+    \item Vulnerable password hashing
+    \item No requirements for user password (length, symbols, etc.)
+    \item Vulnerable libraries
+    \item No password on Dozzle (logging)
+\end{itemize}
+
+Risk Scenarios:
+\begin{itemize}
+    \item A - Attacker performs SQL injection to download sensitive user data
+    \item B - Attacker performs SQL injection to delete information from database
+    \item C - Attacker performs SQL injection to log in on a legitimate user's account
+    \item D - Attacker brute-forces the hash of a password, letting them log in on a legitimate user's account
+    \item E - Attacker uses the open ports to overload our Prometheus with queries
+    \item F - Attacker intersects messages sent over the network, as they are not encrypted
+    \item G - Attacker exploits vulnerable library, which lets them perform some malicious attack
+    \item H - Attacker accesses our logs on Dozzle, which lets them see all outputs, like usernames
+\end{itemize}
+
+\subsubsection{Risk Analysis}
+Here are the scenarios presented on the risk matrix:
+\begin{center}
+\begin{tabular}{ |c|c|c|c|c| } 
+ \hline
+  & Rare & Unlikely & Likely & Certain \\ 
+ \hline
+ Catastrophic & B &  &  & G\\ 
+ \hline
+ Critical & A &  &  & G \\ 
+ \hline
+ Marginal & &  &  F& E,G\\ 
+ \hline
+ Negligible & C &  & D & G,H\\ 
+ \hline
+\end{tabular}
+\end{center}
+Scenario A, B and C have a 'Rare' probability, as we already utilize the ORM-library GORM. GORM uses prepared statements and automatically escapes arguments to avoid SQL injection. Without GORM the probability would be much higher.\\
+Scenario F was dealt with using the TLS protocol. Our Minitwit application using TLS is hosted at https://lukv.dk.\\\\
+For scenario E, we would have to perform a workaround, as the exposed ports are caused by Docker and UFW being incompatible, an issue which has not yet been patched. However, Prometheus is the only service which is exposed, and the only threat is Prometheus crashing due to an overload of queries. Therefore, it is not considered a high-priority threat.
+
+We could reduce the chance of scenario G happening, by keeping our libraries updated. We could also use tools that detect vulnerabilities in dependencies, and keep the dependencies updated automatically. 
+Scenario H can be prevented by locking our Dozzle interface with a password. However, no sensitive data is logged in Dozzle, and thus it is considered low priority.
