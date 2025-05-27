@@ -1,4 +1,7 @@
 \section{Security Assessment}
+To protect our system against adversaries, we first identify the assets which must be protected. We then identify which threats we could be faced with and how. Finally, we analyze these scenarios to figure out which scenarios pose the biggest threats.\\
+(i dunno if this intro text is necessary. Can maybe be cut if we dont have space?)
+
 \subsection{Risk Identification}
 Our assets:
 \begin{itemize}
@@ -30,7 +33,7 @@ Risk Scenarios:
 \end{itemize}
 
 \subsection{Risk Analysis}
-Here are the scenarios presented on the risk matrix\\
+Here are the scenarios presented on the risk matrix:
 \begin{center}
 \begin{tabular}{ |c|c|c|c|c| } 
  \hline
@@ -46,18 +49,17 @@ Here are the scenarios presented on the risk matrix\\
  \hline
 \end{tabular}
 \end{center}
+Scenario A, B and C have a 'Rare' probability, as we already utilize the ORM-library GORM. GORM uses prepared statements and automatically escapes arguments to avoid SQL injection. Without GORM the probability would be much higher.\\
+Scenario F was dealt with using the TLS protocol. Our Minitwit application using TLS is hosted at https://lukv.dk.\\\\
+For scenario E, we would have to perform a workaround, as the exposed ports are caused by Docker and UFW being incompatible, an issue which has not yet been patched. However, Prometheus is the only service which is exposed, and the only threat is Prometheus crashing due to an overload of queries. Therefore, it is not considered a high-priority threat.
 
-Scenario A, B and C have a 'Rare' probability, as we already utilize the ORM-library GORM. GORM uses prepared statements and automatically escapes arguments to avoid SQL injection. Without GORM the probability would be much higher. \\
-Scenario F was dealt with using the TLS protocol. Our Minitwit application using TLS is hosted at https://lukv.dk. \\
-
-For scenario E, we would have to perform a workaround, as the exposed ports are caused by Docker and UFW being incompatible, an issue which has not yet been patched. However, Prometheus is the only service which is exposed, and the only threat is Prometheus crashing due to an overload of queries. Therefore, it is not considered a high-priority threat.\\
 We could reduce the chance of scenario G happening, by keeping our libraries updated. We could also use tools that detect vulnerabilities in dependencies, and keep the dependencies updated automatically. 
 Scenario H can be prevented by locking our Dozzle interface with a password. However, no sensitive data is logged in Dozzle, and thus it is considered low priority.
 
 \section{Scaling and Upgrades}
 \subsection{Scaling}
 To scale our Minitwit application, we performed horizontal scaling using Docker Swarm. We created three manager nodes and four worker nodes. \\
-We have replicas of the following services:\\
+We have replicas of the following services:
 \begin{center}
 \begin{tabular}{ |c|c|c| } 
  \hline
@@ -78,7 +80,7 @@ Prometheus and Dozzle are set to be global services, as they are responsible for
 
 \subsection{Upgrades}
 To update the services in our swarm, we use the 'Blue-Green' update strategy for our Minitwit App and API. When there is an update, a new environment will be created with said update. When it is up and running, traffic will be redirected from the original environment to the newly created one. This leads to minimal downtime for our Minitwit.\\
-In case something goes wrong, we do a rollback, to revert the changes made by the update. **why is rollback stop-first? does it matter?**
+In case something goes wrong, a rollback is performed, which reverts the changes made by the update.
 
 \section{CI/CD Chain}
 \input{sections/workflows}
