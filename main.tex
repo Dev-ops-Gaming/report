@@ -12,6 +12,7 @@
 \usepackage{enumitem}
 \usepackage{graphicx}
 \usepackage{outlines}
+\usepackage[export]{adjustbox}
 \usepackage{pdflscape} % For landscape pages
 \usepackage{float}     % For ordering images and text accordingly
 \usepackage[colorlinks = true, urlcolor  = blue]{hyperref}
@@ -46,12 +47,12 @@
 \setcounter{tocdepth}{2}
 \tableofcontents
 \newpage
-\pagenumbering{arabic}
 \input{sections/SystemsPerspective}
 \input{sections/ProcessPerspective}
 \input{sections/ReflectionPerspective}
 
 % Print the bibliography
+\newpage
 \printbibliography
 % \newpage
 % \input{sections/apendix}

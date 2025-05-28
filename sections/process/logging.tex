@@ -1,2 +1,45 @@
-We implemented Logging in MiniTwit using Dozzle. We were recommended to implement an ELK or ELFK stack, but for our group Dozzle was a better lightweight alternative, I will explain more about why this is later on.
+We implemented logging in MiniTwit using Dozzle. We were recommended to implement an ELK or ELFK stack, but for our group, Dozzle was a better lightweight alternative; I will explain why this is the case later on.
 
+
+Dozzle is a lightweight web-based log viewer for Docker containers that also easily supports Docker Swarm. When we first wanted to implement logging, we implemented ELK in our standard Docker Compose. This was a very basic implementation with no parsing or user setup, so naturally, the logs were almost unreadable. This never made it to production as we had several people working on it; while being worked on, we implemented Docker Swarm, and suddenly, a lot changed for our system. We switched to Docker Stack instead of Docker Compose, so changes were required. Meanwhile, another group member saw a TA proposing a look at Dozzle if you had problems with ELK. Dozzle was implemented with great success in no time and worked great for us.
+
+\subsection*{What do we log in Minitwit?}
+
+
+
+\subsection*{How do we aggregate logs?}
+
+
+\subsection*{Why we choose Dozzle}
+
+\begin{enumerate}
+
+  \item \textbf{Instant, real-time streaming:} Dozzle shows every stdout/stderr line as it happens, with no batching or indexing delay. When we create new replicas (e.g.\ our three \texttt{app} or four \texttt{api} containers), their logs show up live in the UI.
+  
+  \item \textbf{Filtering by service with Docker filters:} Dozzle respects Docker’s own \texttt{--filter} flags (or the \texttt{DOZZLE\_FILTER} env var), which means that we can, for example, show only logs from containers labeled \texttt{service=api} or that are running on a particular node.
+  
+  \item \textbf{Fuzzy sidebar search:}  The sidebar shows all the containers in the minitwit-network overlay. If you type "api," it will immediately narrow it down to your four api replicas. You will not have to scroll through a lot of IDs anymore. You also have the possibility of checking your logs for each individual service on the sidebar.
+
+  \item \textbf{Ad-hoc text \& regex search:} after you have chosen a container’s live tail, you can use the built-in search box to highlight plain text or full regex (e.g.\ \texttt{/ERROR|WARN/}) so that during a rolling update, you only see the lines that matter to you.
+  
+  \item \textbf{No extra infrastructure:} Dozzle is just another container on the overlay network (deployed in global mode). There’s no Elasticsearch cluster to manage, no Logstash pipelines to configure, and no Kibana dashboards to configure.
+  
+  \item \textbf{Minimal resource footprint:} It does not index or save logs, so CPU/memory stays low even under heavy traffic. That means that instead of a full log store, our DigitalOcean droplets will have more space for the \texttt{app}, \texttt{api}, and Postgres services. 
+  
+  \item \textbf{Native support for Docker Swarm:} Running in global mode on every node, Dozzle auto-discovers new replicas when you scale via \texttt{docker stack deploy}, no config changes necessary as your \texttt{deploy.replicas} grow or shrink.
+  
+  \item \textbf{Simple UI:} One page: scroll to the bottom, search for, and download plain text. No need to learn JSON query language or build a dashboard. Great for quick debugging.
+\end{enumerate}
+
+\subsection*{ELK stack features we missed out on:}
+
+\begin{enumerate}
+
+  \item \textbf{Long-term retention \& archiving:} Dozzle only shows live container logs. You would need to construct something like an ELK stack or manually save data.
+  \item \textbf{Structured indexing \& fielded queries:} ELK is capable of parsing JSON (timestamps, user-IDs, and request-IDs) and turning them into queryable data, such as "Find all 5xx from client X in the last hour." On parsed fields, Dozzle's free-text/regex search is incompatible.
+  
+  \item \textbf{Role-based access control:} Kibana offers users, teams, read-only views, and dashboard-level permissions. Dozzle has no auth at all.
+
+\end{enumerate}
+
+While there is a lot more we miss out on not using an ELK stack, these are the ones we feel were relevant to us. An ELK stack would require a lot more management, and you could almost endlessly improve it. We feel that Dozzle provided us with what we needed. With our monitoring, we have the opportunity as developers to quickly use the free search on Dozzle to find our error. 
