@@ -9,7 +9,7 @@ As we monitored the performance of our API and web application throughout the pr
 Although we had not implemented database query monitoring through prometheus, we suspected that the bottleneck might lie in our SQL queries. Looking at the performance metrics provided by DigitalOcean, where our PostgreSQL database is hosted, we identified that the \texttt{queryMessages} method was the cause of this issue, and it became clear that we needed to index on frequently queried columns. The indexation resolved the issue, and our \texttt{/public} endpoint has since then had a response time of 20-50ms. In future projects, it will be optimal to monitor the database execution time and visualize it as a \texttt{Time series} in Grafana to see if queries degrade over time.
 
 \subsubsection{API terminating}
-The very first issue we encountered was the API becoming unavailable due to crashing when the database encountered an error. We had a hard time debugging this, as the crash did not provide any valuable information in the Docker logs (a logging tool had not been introduced yet), only to discover that we used \texttt{panic}, which causes the program to terminate in Go. This took a bit of time to realize, but when we finally traced the issue, we replaced the panic call with returning a proper status code and tried to enforce more thorough code reviews.
+The very first issue we encountered was the API becoming unavailable due to crashing when the database encountered an error. We had a hard time debugging this, as the crash did not provide any valuable information in the Docker logs (a logging tool had not been introduced yet), only to discover that we used \texttt{panic}, which causes the program to terminate in Go. This took a bit of time to realize, but when we finally traced the issue, we replaced the panic call with returning a proper status code and tried to enforce more thorough code reviews, and although implemented a bit late, we integrated our testing suite into our CI flow as shown in section \ref{cicd}.
 
 \subsection{Maintenance}\label{maintainence}
 \subsubsection{Disk usage}
@@ -17,5 +17,5 @@ One valuable lesson we have learned during the course was the importance of mana
 
 \section{Usage of AI-assistants}
 We utilized two large language models (LLMs) throughout the project to support our development process: GitHub Copilot and ChatGPT. GitHub Copilot was primarily used for code completion and was constantly active during development. ChatGPT, on the other hand, was used to quickly gain an overview of how to attack an issue, e.g., the database index issue described in section \ref{operation} or a tutor conveying the essential documentation for e.g., our web framework "Gorilla".
-
+\\
 We found that the LLMs significantly improved our workflow by accelerating learning and implementation. However, we suspect Copilot of introducing the API issue also described in \ref{operation}, so it is important to be critical when utilizing these tools.

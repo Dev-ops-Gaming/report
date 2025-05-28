@@ -25,8 +25,8 @@ Risk Scenarios:
     \item C - Attacker performs SQL injection to log in to a legitimate user's account
     \item D - Attacker brute-forces the hash of a password, letting them log in to a legitimate user's account
     \item E - Attacker uses the open ports to overload our Prometheus with queries
-    \item F - Attacker intersects messages sent over the network, as they are not encrypted
-    \item G - Attacker exploits a vulnerable dependency, which lets them perform some malicious attack
+    \item F - Attacker intersects messages sent over the network, as they are not encrypted*** (attacker reads messages, or does man-in-the-middle to send their own messages to user)
+    \item G - Attacker exploits a vulnerable dependency, which lets them perform some malicious attack. As the actual threat level depends on the specific vulnerability, we've chosen to be pessimist and assume, that the consequences will be disastrous
     \item H - Attacker accesses our logs on Dozzle, which lets them see all outputs, like usernames
 \end{itemize}
 
@@ -39,18 +39,20 @@ Here are the scenarios presented on the risk matrix:
  \hline
  Catastrophic & B &  &  & G\\ 
  \hline
- Critical & A &  &  & G \\ 
+ Critical & A &  &  & \\ 
  \hline
- Marginal & &  &  F& E,G\\ 
+ Marginal & &  &  F& E\\ 
  \hline
- Negligible & C &  & D & G,H\\ 
+ Negligible & C &  & D & H\\ 
  \hline
 \end{tabular}
 \end{center}
 Scenarios A, B, and C have a 'Rare' probability, as we already utilize the ORM-library 'GORM'. GORM uses prepared statements and automatically escapes arguments to avoid SQL injection. Without GORM, the probability would be much higher.\\
 Scenario F was dealt with using the TLS protocol. Our Minitwit application using TLS is hosted at https://lukv.dk.\\
-For scenario G, we have added Dependabot, which will automatically search for outdated dependencies, and create pull requests to update such dependencies.\\\\
+For scenario G, we have added Dependabot, which will automatically search for outdated dependencies, and create pull requests to update such dependencies.
+\\\\
+\\
 For scenario E, we would have to perform a workaround, as the exposed ports are caused by Docker and UFW being incompatible, an issue which has not yet been patched. However, Prometheus is the only service that is exposed, and the only threat is Prometheus crashing due to an overload of queries. Therefore, it is not considered a high-priority threat.
-
-
+\\\\
+\\
 Scenario H can be prevented by locking our Dozzle interface with a password. However, no sensitive data is logged in Dozzle, and thus it is considered low priority.
