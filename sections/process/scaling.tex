@@ -17,7 +17,7 @@ We have replicas of the following services:
 \end{tabular}
 \end{center}
 
-Prometheus and Dozzle are set to be global services, meaning one instance of each runs on every node in the swarm. This ensures that monitoring and logging are consistently performed on all nodes, preventing any loss of critical information, whether it is logging or monitoring, due to missing coverage. 
+Prometheus and Dozzle are set to be global services, meaning that one instance of each runs on every node in the swarm. This ensures that monitoring and logging are consistently performed on all nodes, preventing any loss of critical information, whether it is logging or monitoring, due to missing coverage.
 
 \subsubsection{Upgrades}
-We use a rolling update strategy with a start-first order to update the services in our swarm. This means one replica at a time is updated by starting a new container before stopping the old one, ensuring minimal downtime. Updates are monitored for 30 seconds, and if any failures are detected, our swarm will automatically roll back to the previous working version \cite{dockerComposeDeploy}.
+We use a rolling update strategy with a start-first-order to update the services in our swarm. This means that one replica at a time is updated by starting a new container before stopping the old one, ensuring minimal downtime. Updates are monitored for 30 seconds, and if any failures are detected, our swarm will automatically roll back to the previous working version \cite{dockerComposeDeploy}.

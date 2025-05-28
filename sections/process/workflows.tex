@@ -1,128 +1,24 @@
 We are using GitHub Actions to automate the testing and deployment of Minitwit. There are 5 GitHub Actions workflows:
-\begin{enumerate}
-    \item Deploy services to DigitalOcean
-    \item Use Hadolint on dockerfiles
-    \item Run golangci-lint tool
-    \item Release MiniTwit (automatically)
-\end{enumerate}
 
-\subsubsection{Use Hadolint on dockerfiles}
-This workflow only runs when it get called by other workflows, and analyse if the dockerfiles \code{docker/Dockerfile} and \code{docker/Dockerfile.api} contains any linting issues.\\
-The steps for this workflow is:
 \begin{outline}[enumerate]
-    \1 \textbf{Checkout}
-        \2 \textbf{Purpose} 
-            \3 The workflow uses \code{actions/checkout@v2} to fetch the code from the repository.
-        \2 \textbf{Steps}
-            \3 Checkouts the code.
-
-        
-    \1 \textbf{Hadolint Action app}
-        \2 \textbf{Purpose}
-            \3 Checks for any linting errors using \code{hadolint/hadolint-action@v3.1.0} in \code{docker/Dockerfile}.
-        \2 \textbf{Steps}
-            \3 Runs \code{hadolint-action} on \code{docker/Dockerfile}.
-    
-        
-    \1 \textbf{Hadolint Action api}
-        \2 \textbf{Purpose}
-            \3 Checks for any linting errors using \code{hadolint/hadolint-action@v3.1.0} in \code{docker/Dockerfile.api}.
-        \2 \textbf{Steps}
-            \3 Runs \code{hadolint-action} on \code{docker/Dockerfile.api}.
+    \1 Deploy services to DigitalOcean
+        \2 Runs when there is a push to \code{main}.
+        \2 This workflow builds and pushes Docker images to Docker Hub, it then pulls them onto to the server on DigitalOcean.
+    \1 Run tests and linter
+        \2 Runs on any push or when a PR is updated/created.
+        \2 Runs linters and tests on new commit or PR.
+    \1 Release MiniTwit
+        \2 Runs every thursday at 23:30 UTC.
+        \2 Creates a weekly release of MiniTwit.
+    \1 Run linter
+        \2 Runs when called by other workflows.
+        \2 Lints Go files using golangci-lint.
+    \1 Hadolint on dockerfiles
+        \2 Runs when called by other workflows.
+        \2 Lints Docker files using Hadolint.
 \end{outline}
-
-
-\subsubsection{Run golangci-lint tool}
-This workflow also only runs when it get called by other workflows, and analyses the go source code any linting issues.
-\begin{comment}
-\begin{outline}[enumerate]
-    \1 \textbf{Environment setup}
-        \2 defines the \code{GO_VERSION} to be stable and \code{GOLANGCI_LINT_VERSION}
-    \1 test
-\end{outline}
-\end{comment}
-\begin{outline}[enumerate]
-    \1 \textbf{Environment setup}
-        \2 \textbf{Purpose}
-            \3 Defines some environment variables that are used in the workflow.
-        \2 \textbf{Steps}
-            \3 \code{GO\_VERSION = stable}
-            \3 \code{GOLANGCI\_LINT\_VERSION = v1.64}
-
-            
-    \1 \textbf{Detect Modules}
-        \2 \textbf{Purpose}
-            \3 To output all the Go modules in \code{./minitwit}.
-        \2 \textbf{Steps}
-            \3 Checkout the repository.
-            \3 Runs \code{go list -m} to list all Go modules and outputs in JSON format. 
-    
-    \1 \textbf{Format Go Files}
-        \2 \textbf{Purpose}
-            \3 To format all the \code{.go} files, done by using \code{Jerome1337/gofmt-action@v1.0.5}.
-        \2 \textbf{Steps}
-            \3 Checkout the repository.
-            \3 Runs \code{gofmt-action} to verify formatting in \code{./minitwit}.
-
-            
-    \1 \textbf{Golangci Lint}
-        \2 \textbf{Dependency}
-            \3 Needs \textit{Detect Modules} to run.
-        \2 \textbf{Steps}
-            \3 Checkouts the repository and setups a go environment.
-            \3 Runs \code{golangci-lint} in each GO module.
-\end{outline}
-\subsubsection{Deploy services to DigitalOcean}
-This workflow runs every time the main branch gets a push.
-\begin{outline}[enumerate]
-    \1 \textbf{call-hadolint and call-golangci}
-        \2 \textbf{Dependency}
-            \3 \textit{Hadolint on dockerfiles} and \textit{golangci-lint}.
-        \2 \textbf{Purpose} 
-            \3 to ensure code quality before deployment.
-        \2 \textbf{Steps}
-            \3 Checkout the repository.
-            \3 Run \code{Hadolint on dockerfiles}.
-            \3 Run \code{golangci-lint}.
-    \1 \textbf{Run tests}
-        \2 \textbf{Dependency}
-            \3 \code{call-hadolint and call-golangci}.
-        \2 \textbf{Purpose}
-            \3 To test the code to ensure code quality before deployment.
-        \2 \textbf{Steps}
-            \3 Checkout the repository.
-            \3 Setup a Go environment with v1.22 of Go.
-            \3 Setup docker Compose.
-            \3 Find the test script (\code{run\_tests.sh}).
-            \3 Run the test script.
-    \1 \textbf{Build And Deploy}
-        \2 \textbf{Dependency}
-            \3 \textit{Run tests}
-        \2 \textbf{Purpose}
-            \3 Build a Docker image, push it to Docker Hub and Deploy it on Digital Ocean Droplet.
-        \2 \textbf{Steps}
-            \3 Checkout the repository.
-            \3 Verify secrets.
-            \3 Login to Docker Hub.
-            \3 Set up Docker Buildx.
-            \3 Build and push minitwit-app.
-            \3 Build and push minitwit-api.
-            \3 Configure SSH.
-            \3 Sync files with rsync.
-            \3 Deploy to server.
-\end{outline}
-
-\subsubsection{Release MiniTwit (automatically)}
-This workflow creates a release on Github every thursday at 23:30 UTC.
-\begin{outline}[enumerate]
-    \1 \textbf{Automatic Release}
-        \2 \textbf{Purpose} 
-            \3 Creates a release on Github.
-        \2 \textbf{Steps}
-            \3 Checkout the repository.
-            \3 Fetch latest version tag.
-            \3 Determine next version.
-            \3 Validate against SemVar pattern.
-            \3 Generate release notes.
-            \3 Create GitHub Release.
-\end{outline}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/Worflows.png}
+    \caption{Activity diagram of the workflows.}
+\end{figure}
