@@ -3,7 +3,7 @@ We are using GitHub Actions to automate the testing and deployment of Minitwit. 
 \begin{outline}[enumerate]
     \1 Deploy services to DigitalOcean
         \2 Runs when there is a push to \code{main}.
-        \2 This workflow builds and pushes Docker images to Docker Hub, it then pulls them onto to the server on DigitalOcean.
+        \2 This workflow builds and pushes Docker images to Docker Hub, and then pulls them to the server on DigitalOcean.
     \1 Run tests and linter
         \2 Runs on any push or when a PR is updated/created.
         \2 Runs linters and tests on new commit or PR.
