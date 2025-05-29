@@ -1,12 +1,38 @@
-This project relies on several dependencies across different project areas, including runtime, testing, and infrastructure.
+This project relies on several dependencies across different project areas, including runtime, testing, and infrastructure. The dependencies have been kept up-to-date using Dependabot.
 
 \subsubsection{App and API}
-Our app and API are built using Golang. It introduces the following dependencies:
+Our app and API are built in Go 1.23.0, and rely on the following direct dependencies:
+\begin{itemize}
+    \item \textbf{github.com/gorilla/mux:} Router for HTTP request routing.
+    \item \textbf{github.com/gorilla/sessions:} Session management for user authentication.
+    \item \textbf{gorm.io/gorm} and \textbf{gorm.io/driver/postgres:} GORM ORM and PostgreSQL driver for database operations.
+    \item \textbf{github.com/prometheus/client\_golang:} Exposes Prometheus metrics endpoints for monitoring.
+\end{itemize}
 
 \subsubsection{Testing}
+\begin{itemize}
+    \item \textbf{Go:}
+    \begin{itemize}
+        \item \textbf{Go's built-in testing package:} Go's native testing framework
+        \item \textbf{Testify:} Used for more assertions and mocking
+        \item \textbf{github.com/mattn/go-sqlite3:} Creates a local testing database
+    \end{itemize}
+
+\item \textbf{Python:}
+\begin{itemize}
+    \item \textbf{Pytest:} Testing framework
+    \item \textbf{Selenium:} Browser automation for UI testing
+    \item \textbf{Requests:} HTTP client library for API testing
+\end{itemize}
+\end{itemize}
 
 \subsubsection{Infrastructure}
 \begin{itemize}
-    \item To maintain a swarm 
-    \item Postgres database
+    \item \textbf{Docker:} Used for containerizing both the API and the app. Docker compose was used during development to orchestrate services. Later in the project, Docker Swarm was adopted to deploy containers across multiple nodes in production.
+    \item \textbf{Virtual Machines:} The swarm nodes are hosted on VMs (DigitalOcean Droplets in this project).
+    \item \textbf{Docker Hub:} Used to distribute container images. The CI/CD pipeline pushes API and app images to Docker Hub for swarm nodes to pull.
+    \item \textbf{PostgreSQL:} Main production database, managed as a hosted database in Digital Ocean.
+    \item \textbf{Prometheus:} Scrapes and stores metrics from both the app and API and from itself.
+    \item \textbf{Grafana:} Visualizes metrics collected by Prometheus.
+    \item \textbf{Dozzle:} Provides a real-time web UI for viewing container logs in Docker Swarm.
 \end{itemize}

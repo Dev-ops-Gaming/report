@@ -1,0 +1,26 @@
+@startuml
+actor User
+participant Browser
+participant "Go Server\n(AddMessageHandler)" as Server
+participant "Session Store\n(Gorilla Sessions)" as Session
+participant "GORM\n(PostgreSQL)" as GORM
+participant "PostgreSQL" as DB
+
+User -> Browser: 1. Submits message form\n(POST /add_message)
+Browser -> Server: 2. HTTP POST\n(Form: text, Cookie: session)
+
+Server -> Session: 3. session, _ := utils.GetSession(r, w)
+Session --> Server: 4. Session data (user_id)
+
+Server -> GORM: 5. Create(&message)\nStruct: {Author_id, Text,\nPub_date, Flagged}
+GORM -> DB: 6. INSERT INTO messages\n(...)
+DB --> GORM: 7. Query success
+GORM --> Server: 8. Result object
+
+Server -> Session: 9. utils.AddFlash()\n"Your message was recorded"
+Session --> Server: 10. Flash message stored
+
+Server -> Browser: 11. HTTP 302 Redirect to "/"
+Browser -> User: 12. Show updated timeline
+
+@enduml

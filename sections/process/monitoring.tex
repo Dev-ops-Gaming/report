@@ -8,7 +8,6 @@ Prometheus was integrated into both the API and the application through a custom
 \item \texttt{http\_request\_duration\_seconds}: A histogram measuring the time taken to process HTTP requests, in seconds. It is labeled by request path and method, enabling performance benchmarks for endpoints.
 \item \texttt{http\_response\_messages\_total}: A counter that logs the total number of HTTP responses, categorized by status code and message type. Before logging was fully implemented, this metric was particularly helpful in identifying which endpoints triggered specific status messages and understanding the reasons behind them. A bit deprecated as soon as logging was implemented.
 \end{itemize}
-
 Seen in retrospect, it would have been a good idea also to collect metrics on database queries, but this will be described more thoroughly in section \ref{maintainence}
 
 \subsubsection{Grafana}
