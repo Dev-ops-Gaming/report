@@ -15,19 +15,15 @@
 \usepackage[export]{adjustbox}
 \usepackage{pdflscape} % For landscape pages
 \usepackage{float}     % For ordering images and text accordingly
-\usepackage[colorlinks = true, urlcolor  = blue]{hyperref}
+% \usepackage[colorlinks = true, urlcolor  = blue]{hyperref}
 \graphicspath{ {./images/} }
 \usepackage{biblatex}
 \addbibresource{bibliography.bib}
 \usepackage[table]{xcolor} % Add to preamble
 
-\usepackage{hyperref}
-\hypersetup{
-    colorlinks=false, % Set to false if you don't want colored links
-    linkcolor=blue,   % Color of links to internal documents
-    filecolor=magenta, % Color of file links
-    urlcolor=cyan     % Color of external links
-}
+\usepackage[colorlinks=true, % Enable colored links (not borders)
+    allcolors=black,  % ← Forces ALL link types to black
+]{hyperref}
 
 \setlist[itemize]{itemsep=2pt, parsep=0pt}
 \setlength{\arrayrulewidth}{0.3mm}
