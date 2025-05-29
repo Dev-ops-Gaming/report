@@ -57,7 +57,7 @@ Scenarios A, B, and C have a 'Rare' probability, as we already utilize the ORM-l
 Scenario F was dealt with using the TLS protocol. Our Minitwit application using TLS is hosted at https://lukv.dk.\\
 For scenario G, we have added Dependabot, which will automatically search for outdated dependencies, and create pull requests to update such dependencies.
 \\\\
-For Scenario E, we should have set up some sort of firewall (which we could do on DigitalOcean, where the database is hosted), such that only specific services are allowed to establish a connection. 
+For Scenario E, we should have set up some sort of firewall (which we could do on DigitalOcean), such that only specific services are allowed to establish a connection to the database. 
 %For scenario E, we would have to perform a workaround, as the exposed ports are caused by Docker and UFW being incompatible, an issue which has not yet been patched. However, Prometheus is the only service that is exposed, and the only threat is Prometheus crashing due to an overload of queries. Therefore, it is not considered a high-priority threat.\\
 Scenario I can never truly be prevented, but there are ways to mitigate the risk, such as sanitizing inputs. 
 \\
