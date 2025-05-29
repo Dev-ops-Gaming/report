@@ -1,38 +1,37 @@
-To protect our system against adversaries, we first identify the assets that must be protected. We then identify which threats we could face and how. Finally, we analyze these scenarios to figure out which scenarios pose the biggest threats.
-
-\subsubsection{Risk Identification}
+\subsubsection{Risk identification}
 Our assets:
 \begin{itemize}
-    \item Codebase
-    \item Database
-    \item Logs
+    \item Web app and API
+    \item Postgres database (Hosted through DigitalOcean)
+    \item Monitoring (Prometheus and Grafana)
+    \item Logging (Dozzle)
+    \item DigitalOcean VMs
 \end{itemize}
 
 Threat Sources:
 \begin{itemize}
     \item SQL Injection
-    \item Exposed ports (Prometheus)
+    \item Exposed ports 
     \item Vulnerable password hashing
     \item No requirements for user password (length, symbols, etc.)
     \item Vulnerable dependencies
     \item No password on Dozzle (logging)
     \item Cross-Site Scripting (XSS)
-    \item 
 \end{itemize}
 
 Risk Scenarios:
-\begin{itemize}
-    \item A - Attacker performs SQL injection to download sensitive user data
-    \item B - Attacker performs SQL injection to delete information from the database
-    \item C - Attacker performs SQL injection to log in to a legitimate user's account
-    \item D - Attacker brute-forces the hash of a password, letting them log in to a legitimate user's account
-    \item E - Attacker uses the open ports to overload our Prometheus with queries
-    \item F - Attacker intercepts messages sent over the network, as they are not encrypted
-    \item G - Attacker exploits a vulnerable dependency, which lets them perform some malicious attack. As the actual threat level depends on the specific vulnerability, we've chosen to be pessimist and assume, that the consequences will be disastrous
-    \item H - Attacker accesses our logs on Dozzle, which lets them see all outputs, like usernames
-    \item I - Attacker uses Cross-Site Scripting to run malicious code, such as stealing session cookies
-    \item J - Attacker performs a DDOS attack against MiniTwit
-\end{itemize}
+\begin{enumerate}[label=\textbf{\Alph*}]
+    \item Attacker performs SQL injection to download sensitive user data
+    \item Attacker performs SQL injection to delete information from the database
+    \item Attacker performs SQL injection to log in to a legitimate user's account
+    \item Attacker brute-forces the hash of a password, letting them log in to a legitimate user's account
+    \item Attacker uses the open ports to overload our Prometheus with queries
+    \item Attacker intercepts messages sent over the network, as they are not encrypted
+    \item Attacker exploits a vulnerable dependency, which lets them perform some malicious attack. As the actual threat level depends on the specific vulnerability, we've chosen to be pessimistic and assume that the consequences will be disastrous
+    \item Attacker accesses our logs on Dozzle, which lets them see all logs
+    \item Attacker uses Cross-Site Scripting to run malicious code
+    \item Attacker performs a DDoS attack
+\end{enumerate}
 
 \subsubsection{Risk Analysis}
 Here are the scenarios presented on the risk matrix:
@@ -51,7 +50,8 @@ Here are the scenarios presented on the risk matrix:
  \hline
 \end{tabular}
 \end{center}
-Scenarios A, B, and C have a 'Rare' probability, as we already utilize the ORM-library 'GORM'. GORM uses prepared statements and automatically escapes arguments to avoid SQL injection. Without GORM, the probability would be much higher. Speficially for scenario B, it would also have been a good idea to have a backup of the database.\\
+\subsubsection{Discussion of risks}
+Scenarios A, B, and C have a 'Rare' probability, as we already utilize the ORM-library 'GORM'. GORM uses prepared statements and automatically escapes arguments to avoid SQL injection. Without GORM, the probability would be much higher. Specifically for scenario B, it would also have been a good idea to have a backup of the database. The severity is also not a high risk, as the passwords are encrypted and no other sensitive user data is stored.\\
 Scenario F was dealt with using the TLS protocol. Our Minitwit application using TLS is hosted at https://lukv.dk.\\
 For scenario G, we have added Dependabot, which will automatically search for outdated dependencies, and create pull requests to update such dependencies.
 \\\\
