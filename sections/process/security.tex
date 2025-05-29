@@ -27,12 +27,11 @@ Risk Scenarios:
     \item C - Attacker performs SQL injection to log in to a legitimate user's account
     \item D - Attacker brute-forces the hash of a password, letting them log in to a legitimate user's account
     \item E - Attacker uses the open ports to overload our Prometheus with queries
-    \item F - Attacker intersects messages sent over the network, as they are not encrypted*** (attacker reads messages, or does man-in-the-middle to send their own messages to user)
+    \item F - Attacker intercepts messages sent over the network, as they are not encrypted
     \item G - Attacker exploits a vulnerable dependency, which lets them perform some malicious attack. As the actual threat level depends on the specific vulnerability, we've chosen to be pessimist and assume, that the consequences will be disastrous
     \item H - Attacker accesses our logs on Dozzle, which lets them see all outputs, like usernames
-    \item I - Attacker uses Cross-Site Scripting to run malicious code
+    \item I - Attacker uses Cross-Site Scripting to run malicious code, such as stealing session cookies
     \item J - Attacker performs a DDOS attack against MiniTwit
-    \item K - 
 \end{itemize}
 
 \subsubsection{Risk Analysis}
@@ -56,9 +55,7 @@ Scenarios A, B, and C have a 'Rare' probability, as we already utilize the ORM-l
 Scenario F was dealt with using the TLS protocol. Our Minitwit application using TLS is hosted at https://lukv.dk.\\
 For scenario G, we have added Dependabot, which will automatically search for outdated dependencies, and create pull requests to update such dependencies.
 \\\\
-\\
 For scenario E, we would have to perform a workaround, as the exposed ports are caused by Docker and UFW being incompatible, an issue which has not yet been patched. However, Prometheus is the only service that is exposed, and the only threat is Prometheus crashing due to an overload of queries. Therefore, it is not considered a high-priority threat.\\
 Scenario I can never truly be prevented, but there are ways to mitigate the risk, such as sanitizing inputs. 
-\\\\
 \\
 Scenario H can be prevented by locking our Dozzle interface with a password. However, no sensitive data is logged in Dozzle, and thus it is considered low priority.
