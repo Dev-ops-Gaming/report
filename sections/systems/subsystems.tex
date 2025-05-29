@@ -1,17 +1,17 @@
 
-Depending on which kind of request sendt to MiniTwit. It will either be handled by the app or API. They both use the same database, so the data will be shared between them both. The sequence diagrams below, how they handle a post message request. Figure \ref{fig:user-seq} shows how a user request is handled and figure \ref{fig:api-seq} shows the same for the api.
+Depending on the type of request sent to MiniTwit, it will be handled either by the web application or the API. Both components share the same database, ensuring that data remains consistent between them. The sequence diagrams below illustrate how a "post message" request is processed. Figure \ref{fig:user-seq} shows the handling of such a request through the user interface, while Figure \ref{fig:api-seq} shows how it is handled via the API.
 
 \begin{figure}[H]
 % https://editor.plantuml.com/uml/RLDTRzem57tthpZAmmGITKkxpqYRMifA9ws3alHX4X8oyHru2p7oHrbLxR_F9aaBLPyYNvzpxZt7D-VM2UFykcIYSDhWpf9Xcr1IXTg8oc5WzFPbBHbfP6JkoSogpeMKDsIjMDArg6H9ffj0sER-a9O5dD8Lij290dMaZIfBWQPkM-RkzABZU7eJ61DjtT9GTlkzniRo8V0PiGCC1un5JpZwqbf9qUV8_6AjdCMw7Xs_j5b7_N6MurX8EMykkgnXHO7QKufJZkiydo2Y0-agS5Cu-kjwkDJwZw8KjZRHPQmcrVHTBSKPR-zxc2Fz3EzKQVc8N0Ffc1wsNTRcTRJN-orlTI254-ZuCDnSoODECPOKxpWk3Gb7dJUjcrcLEUCBb-BnmhkLZimUyZZwh9hunJneKWzNfLWkIVvZKIWA3WSftdDy-v5zdURXau_Rv6m8W7FUPSF1RiwwzGUEMq_c0TONHG0sGdi-Fd9CoVhIGIz-K-5U3UeJRw89InPcigjES93yrDuyFTmsFBAXGXj9CdariVu9nuxynB5n_-H-n-VLw3TlUtPo6WQKAcWxE8taEDbVXRiQ7JOXM-aj_2O69-7KcafL4MFdLCdmM_q7
 \includegraphics[width=\textwidth]{images/user-seq-diagram.png}
 \centering
-\caption{Sequence diagram of a user posting a messages.}
+\caption{Sequence diagram of a user posting messages.}
 \label{fig:user-seq}
 \end{figure}
 % https://editor.plantuml.com/uml/TLJRJjj047tVhnZvYKXWI4XRy4DBIfkKYbp0KAegKhJnJfDLxTsmkuQuY7_l-59ifzIIR-CpPywS6VdCEcvSciJCIHSZ36ON0HmcTcKFdrABHl44d-6p4XijbOCGxrDK4J8UEMt08pYSnnALcwkzK2Pfp2dUyO3RAiusn2yZkU6KxeqqKPW7D0MYV6mZnbA861-vmG9IlxPXNxYYk9ch1AtbAxGpDBUsugq-xfIUNez9v4nRjp8ONbsMAlDm6pYKv4EOMOT9WHY6Z9MzmC7xIdC0NHzcq_3c7w_cQf2wTG0VkPKHHBtOYRljMenEiwcQTAFHj-pxyMJz8xbTiv8g9wsx3A3dGxeHtE4bdTRjcGwhF-VWOHZ0iGztHZg4k00jDaP7P0IAXPN9WeOZjLf8uRkjOyCG3dPgzF-cspJAyreL6as-yU5SAoTLYb2La6h56iehgmDuIz0rHh-0K_lQoDyyrq26A-skyNveT5Bl1wlIMiNU-J1evi83ZwLWDRPHhKlAFc6a1SBNS3g1fHRPN3rv4QcbGNa1UDLYWCEjyvwRBFd8YO8KNwLeCiXd1ylodi-GvO12MbsFnENh1TGD_DIf4XyOZzrEZ04TpTRAjQ7q4-v3_wXFijeP7iFOOadp2iMBrfCbsMkGXWqA7s5SzaRkbexHgFVXXXhTXrcwNEJRqocONkdar8SBHVNSo_3_fxftvDD9eYSQAcCPaaHsHbVwPVm1
 \begin{figure}[H]
 \includegraphics[width=\textwidth]{images/api-seq-diagram.png}
 \centering
-\caption{Sequence diagram of a api posting a messages.}
+\caption{Sequence diagram of an api posting messages.}
 \label{fig:api-seq}
 \end{figure}

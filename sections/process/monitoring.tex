@@ -1,5 +1,3 @@
-We monitored MiniTwit using Prometheus for collecting metrics and Grafana for visualizing them. This setup provided great insights into the application's performance and behavior.
-
 \subsubsection{Prometheus}\label{prom}
 Prometheus was integrated into both the API and the application through a custom middleware that intercepts HTTP requests to gather metrics. The metrics collected includes:
 
@@ -11,7 +9,7 @@ Prometheus was integrated into both the API and the application through a custom
 Seen in retrospect, it would have been a good idea also to collect metrics on database queries, but this will be described more thoroughly in section \ref{maintainence}
 
 \subsubsection{Grafana}
-Although Prometheus was important for collecting data, Grafana is utilized to visualize the data. Grafana connects to Prometheus as a data source, enabling the creation of dashboards. As mentioned in section \ref{prom}, we monitored both our API and app, which resulted in us setting up two dashboards: one for the app and one for the API.
+While Prometheus was important for collecting data, Grafana was utilized to visualize the data. Grafana connects to Prometheus as a data source, enabling the creation of dashboards. As mentioned in section \ref{prom}, we monitored both our API and app, which resulted in us setting up two dashboards: one for the app and one for the API.
 \\\\
 For instance, the API dashboard converted the metrics collected by Prometheus into a clear visual representation of the API's health and performance. Panels were set up to showcase:
 \begin{itemize}
