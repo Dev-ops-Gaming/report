@@ -32,7 +32,7 @@ Our app and API are built in Go 1.23.0, and rely on the following direct depende
     \item \textbf{Virtual Machines:} The swarm nodes are hosted on VMs (DigitalOcean Droplets in this project).
     \item \textbf{Docker Hub:} Used to distribute container images. The CI/CD pipeline pushes API and app images to Docker Hub for swarm nodes to pull.
     \item \textbf{PostgreSQL:} Main production database, managed as a hosted database in Digital Ocean.
-    \item \textbf{Prometheus:} Scrapes and stores metrics from both the app and API and from itself.
+    \item \textbf{Prometheus:} Scrapes and stores metrics from both the app and API.
     \item \textbf{Grafana:} Visualizes metrics collected by Prometheus.
-    \item \textbf{Dozzle:} Provides a real-time web UI for viewing container logs in Docker Swarm.
+    \item \textbf{Dozzle:} Provides a web UI for viewing container logs in Docker Swarm.
 \end{itemize}
